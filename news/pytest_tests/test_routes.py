@@ -8,7 +8,7 @@ from django.urls import reverse
 @pytest.mark.parametrize(
     'name, arguments',
     [('news:home', None),
-     #  ('news:detail', pytest.lazy_fixture('pk_news')),
+     ('news:detail', pytest.lazy_fixture('pk_news')),
      ('users:login', None),
      ('users:logout', None),
      ('users:signup', None)]
@@ -51,3 +51,19 @@ def test_pages_availability_for_different_users(parametrized_client, name, comme
     url = reverse(name, args=(comment.pk,))
     response = parametrized_client.get(url)
     assert response.status_code == expected_status
+
+
+@pytest.mark.django_db
+@pytest.mark.parametrize(
+    'name, pk_for_comment',
+    (
+        ('news:delete', pytest.lazy_fixture('pk_comment')),
+        ('news:edit', pytest.lazy_fixture('pk_comment'))
+    )
+)
+def test_redirects(client, name, pk_for_comment):
+    login_url = reverse('users:login')
+    url = reverse(name, args=pk_for_comment)
+    expected_url = f'{login_url}?next={url}'
+    response = client.get(url)
+    assertRedirects(response, expected_url)
