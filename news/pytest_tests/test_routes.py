@@ -63,7 +63,8 @@ def test_redirects(client, name, pk_for_comment):
         ('news:edit')
     )
 )
-def test_pages_availability_for_different_users(parametrized_client, name, comment, expected_status):
+def test_pages_availability_for_different_users(parametrized_client, name,
+                                                comment, expected_status):
     url = reverse(name, args=(comment.pk,))
     response = parametrized_client.get(url)
     assert response.status_code == expected_status
