@@ -82,3 +82,15 @@ def created_comment_with_timedelta(news, author):
 
         comment.created = today + timedelta(days=index)
     return comment.save()
+
+
+@pytest.fixture
+def form_data():
+    return {
+        'text': 'Текст комментария'
+    }
+
+
+@pytest.fixture
+def new_form_data():
+    return {'text': 'new comment'}
