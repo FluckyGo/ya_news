@@ -1,10 +1,11 @@
 import pytest
 
-from news.models import News, Comment
 from django.conf import settings
 from django.utils import timezone
 
 from datetime import timedelta
+
+from news.models import News, Comment
 
 
 @pytest.fixture
@@ -50,7 +51,10 @@ def pk_comment(comment):
 @pytest.fixture
 def created_news():
     all_news = [
-        News(title=f'Новость {index}', text='Просто текст.')
+        News(
+            title=f'Новость {index}',
+            text='Просто текст.'
+        )
         for index in range(settings.NEWS_COUNT_ON_HOME_PAGE + 1)
     ]
     return News.objects.bulk_create(all_news)
@@ -93,4 +97,6 @@ def form_data():
 
 @pytest.fixture
 def new_form_data():
-    return {'text': 'new comment'}
+    return {
+        'text': 'new comment'
+    }
